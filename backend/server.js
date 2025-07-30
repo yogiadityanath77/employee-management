@@ -11,7 +11,13 @@ const { errorHandler } = require("./middleware/errorHandler");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://employee-management-kohl-tau.vercel.app/", // Replace with your actual Vercel URL
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // Routes
