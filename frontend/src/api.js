@@ -1,11 +1,9 @@
-// src/api.js
-
 import axios from "axios";
 
-// ✅ Use the deployed backend URL
+// ✅ Use deployed backend
 axios.defaults.baseURL = "https://employee-management-uh8e.onrender.com";
 
-// ✅ Attach token automatically
+// ✅ Attach token to every request
 axios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");

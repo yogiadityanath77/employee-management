@@ -10,28 +10,32 @@ const { errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
 
-// Middleware
+// ✅ CORS Setup — Allow frontend from Vercel + local dev
 app.use(
   cors({
-    origin: "https://employee-management-kohl-tau.vercel.app/", // Replace with your actual Vercel URL
+    origin: [
+      "http://localhost:3000",
+      "https://employee-management-kohl-tau.vercel.app",
+    ],
     credentials: true,
   })
 );
 
 app.use(express.json());
 
-// Routes
+// ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", auth, employeeRoutes);
 
+// ✅ Test route
 app.get("/", (req, res) => {
   res.send("✅ Employee Management API is running.");
 });
 
-// Error handling middleware (must be last)
+// ✅ Error handling middleware (must be last)
 app.use(errorHandler);
 
-// ✅ Only connect DB if NOT in test mode
+// ✅ Connect DB if not in test mode
 if (process.env.NODE_ENV !== "test") {
   mongoose
     .connect(process.env.MONGO_URI)
@@ -39,7 +43,7 @@ if (process.env.NODE_ENV !== "test") {
     .catch((err) => console.error("❌ MongoDB connection error:", err));
 }
 
-// ✅ Only start server if not testing
+// ✅ Start server if not being tested
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
@@ -47,4 +51,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = app; // ✅ Export the app for Supertest
+module.exports = app;
